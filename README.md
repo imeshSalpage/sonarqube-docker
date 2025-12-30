@@ -22,18 +22,34 @@ A streamlined Docker Compose setup to deploy SonarQube locally with PostgreSQL, 
 
 ## Quick Start
 
-### 1. Clone and Start Services
+### 1. Set Up Environment Variables
 
 ```bash
 # Clone this repository
 git clone https://github.com/imeshSalpage/sonarqube-docker.git
 cd sonarqube-docker
 
+# Copy the environment template
+cp tmp.env .env
+
+# Edit .env and set your passwords
+nano .env  # or use your preferred editor
+```
+
+**Important:** Update the passwords in `.env` before starting:
+```env
+POSTGRES_PASSWORD=your_secure_password
+SONAR_JDBC_PASSWORD=your_secure_password
+```
+
+### 2. Start Services
+
+```bash
 # Start SonarQube and PostgreSQL
 docker compose up -d
 ```
 
-### 2. Wait for Services to Start
+### 3. Wait for Services to Start
 
 SonarQube takes 1-2 minutes to initialize. Monitor the logs:
 
@@ -43,7 +59,7 @@ docker compose logs -f sonarqube
 
 Wait until you see: `SonarQube is operational`
 
-### 3. Access SonarQube
+### 4. Access SonarQube
 
 Open your browser and navigate to: `http://localhost:9000`
 
@@ -54,6 +70,30 @@ Open your browser and navigate to: `http://localhost:9000`
 ⚠️ You'll be prompted to change the password on first login.
 
 ## Configuration
+
+### Environment Variables
+
+Create a `.env` file from the template:
+
+```bash
+cp tmp.env .env
+```
+
+Configure the following variables in `.env`:
+2. **PostgreSQL** (Internal)
+   - Database for SonarQube
+   - Credentials configured via `.env` file
+
+# SonarQube Database Connection
+SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar
+SONAR_JDBC_USERNAME=sonar
+SONAR_JDBC_PASSWORD=change_me_in_production
+```
+
+⚠️ **Security Note:** 
+- Never commit `.env` to version control (it's in `.gitignore`)
+- Use strong passwords in production
+- Both PostgreSQL and SonarQube passwords should match
 
 ### Docker Services
 
